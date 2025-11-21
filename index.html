@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Carbohydrate Calculator</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font:14px Arial,sans-serif;background:#f5f5f5;padding:10px}
+.container{max-width:800px;margin:0 auto;background:#fff;padding:15px;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+h1{color:#2c3e50;margin-bottom:15px;font-size:24px}
+.loading{text-align:center;padding:20px;color:#7f8c8d}
+.filters{display:flex;gap:10px;margin-bottom:15px}
+.search-box,.category-select{flex:1;padding:10px;border:2px solid #3498db;border-radius:5px;font-size:14px}
+.category-select{flex:0.6}
+.food-list{max-height:300px;overflow-y:auto;border:1px solid #ddd;border-radius:5px;margin-bottom:15px}
+.food-item{padding:8px 10px;border-bottom:1px solid #eee;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.food-item:hover{background:#e8f4f8}
+.food-name{flex:1}
+.food-category{font-size:11px;color:#95a5a6;margin-left:10px}
+.carbs-value{color:#e74c3c;font-weight:bold}
+.add-btn{background:#27ae60;color:#fff;border:none;padding:5px 10px;border-radius:3px;cursor:pointer;font-size:12px}
+.add-btn:hover{background:#229954}
+.meal{background:#ecf0f1;padding:15px;border-radius:5px;margin-top:15px}
+.meal h2{font-size:18px;margin-bottom:10px;color:#2c3e50}
+.meal-item{background:#fff;padding:8px;margin:5px 0;border-radius:3px;display:flex;justify-content:space-between;align-items:center}
+.qty-input{width:60px;padding:3px;border:1px solid #bdc3c7;border-radius:3px;text-align:center}
+.remove-btn{background:#e74c3c;color:#fff;border:none;padding:3px 8px;border-radius:3px;cursor:pointer;font-size:11px}
+.remove-btn:hover{background:#c0392b}
+.total{background:#3498db;color:#fff;padding:15px;border-radius:5px;margin-top:15px;text-align:center}
+.total h3{font-size:20px}
+.unit{font-size:12px;color:#7f8c8d}
+.info{font-size:12px;color:#fff;margin-top:5px;opacity:.9}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🍽️ Carbohydrate Calculator</h1>
+<div class="loading" id="loading">Loading food database...</div>
+<div id="app" style="display:none">
+<div class="filters">
+<input type="text" class="search-box" id="search" placeholder="Search foods (min 3 letters)...">
+<select class="category-select" id="category">
+<option value="">All Categories</option>
+</select>
+</div>
+<div class="food-list" id="foodList"></div>
+<div class="meal">
+<h2>My Meal</h2>
+<div id="mealItems"></div>
+</div>
+<div class="total">
+<h3>Total Carbs: <span id="totalCarbs">0</span>g</h3>
+<p class="info"><span id="foodCount">0</span> foods available</p>
+</div>
+</div>
+</div>
+<script>
+let foods=[];
+let meal=[];
+let loadedFiles=0;
+const totalFiles=17;
+
+for(let i=1;i<=totalFiles;i++){
+const script=document.createElement('script');
+script.src=`data_${i}.js`;
+script.onload=()=>{
+loadedFiles++;
+if(window['foodData'+i]){
+foods=foods.concat(window['foodData'+i]);
+}
+if(loadedFiles===totalFiles){
+foods.sort((a,b)=>a[0].localeCompare(b[0]));
+initApp();
+}
+};
+script.onerror=()=>{
+document.getElementById('loading').innerHTML='<span style="color:#e74c3c">Error loading data. Ensure all data_*.js files are in the same directory.</span>';
+};
+document.head.appendChild(script);
+}
+
+function initApp(){
+document.getElementById('loading').style.display='none';
+document.getElementById('app').style.display='block';
+document.getElementById('foodCount').textContent=foods.length.toLocaleString();
+
+// Build category list
+const categories=new Set();
+foods.forEach(f=>categories.add(f[2]));
+const catSelect=document.getElementById('category');
+[...categories].sort().forEach(cat=>{
+const opt=document.createElement('option');
+opt.value=cat;
+opt.textContent=cat;
+catSelect.appendChild(opt);
+});
+
+document.getElementById('search').addEventListener('input',render);
+document.getElementById('category').addEventListener('change',render);
+render();
+}
+
+function render(){
+const searchTerm=document.getElementById('search').value.toLowerCase();
+const selectedCat=document.getElementById('category').value;
+
+let filtered=foods;
+
+// Filter by category
+if(selectedCat){
+filtered=filtered.filter(f=>f[2]===selectedCat);
+}
+
+// Filter by search (min 3 letters)
+if(searchTerm.length>=3){
+filtered=filtered.filter(f=>f[0].toLowerCase().includes(searchTerm));
+}
+
+// Limit results
+const results=filtered.slice(0,100);
+
+document.getElementById('foodList').innerHTML=results.length?results.map((f,i)=>`<div class="food-item"><span class="food-name">${f[0]}<span class="food-category">${f[2]}</span></span><span class="carbs-value">${f[1]}g<span class="unit">/100g</span></span><button class="add-btn" onclick="add(${foods.indexOf(f)})">+</button></div>`).join(''):`<p style="padding:10px;color:#95a5a6">${searchTerm.length>0&&searchTerm.length<3?'Type at least 3 letters to search':'No foods found'}</p>`;
+}
+
+function add(i){
+meal.push({name:foods[i][0],carbs:foods[i][1],qty:100});
+renderMeal();
+}
+
+function remove(i){
+meal.splice(i,1);
+renderMeal();
+}
+
+function updateQty(i,v){
+meal[i].qty=parseFloat(v)||0;
+renderMeal();
+}
+
+function renderMeal(){
+const items=meal.map((m,i)=>`<div class="meal-item"><span>${m.name}</span><input type="number" class="qty-input" value="${m.qty}" onchange="updateQty(${i},this.value)">g<span class="carbs-value">${(m.carbs*m.qty/100).toFixed(1)}g</span><button class="remove-btn" onclick="remove(${i})">×</button></div>`).join('');
+document.getElementById('mealItems').innerHTML=items||'<p style="color:#95a5a6">Add foods to your meal</p>';
+const total=meal.reduce((sum,m)=>sum+(m.carbs*m.qty/100),0);
+document.getElementById('totalCarbs').textContent=total.toFixed(1);
+}
+</script>
+</body>
+</html>
