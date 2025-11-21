@@ -10,14 +10,12 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding-bottom: 20px;
         }
-
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -28,24 +26,20 @@
             z-index: 100;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
-
         .header h1 {
             font-size: 1.8em;
             margin-bottom: 5px;
             font-weight: 600;
         }
-
         .header p {
             font-size: 0.9em;
             opacity: 0.9;
         }
-
         .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 0;
         }
-
         .total-card {
             background: white;
             margin: 15px;
@@ -54,14 +48,12 @@
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
             text-align: center;
         }
-
         .total-card h2 {
             font-size: 1em;
             color: #666;
             margin-bottom: 8px;
             font-weight: 500;
         }
-
         .total-amount {
             font-size: 3em;
             font-weight: 700;
@@ -70,12 +62,10 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
         .search-box {
             margin: 15px;
             position: relative;
         }
-
         .search-box input {
             width: 100%;
             padding: 16px 50px 16px 20px;
@@ -85,7 +75,6 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             outline: none;
         }
-
         .search-icon {
             position: absolute;
             right: 20px;
@@ -93,7 +82,6 @@
             transform: translateY(-50%);
             font-size: 1.3em;
         }
-
         .categories {
             display: flex;
             overflow-x: auto;
@@ -102,11 +90,9 @@
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
         }
-
         .categories::-webkit-scrollbar {
             display: none;
         }
-
         .category-btn {
             background: white;
             border: none;
@@ -119,18 +105,15 @@
             transition: all 0.3s ease;
             flex-shrink: 0;
         }
-
         .category-btn.active {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             font-weight: 600;
             transform: scale(1.05);
         }
-
         .content {
             padding: 0 15px;
         }
-
         .food-item {
             background: white;
             padding: 16px;
@@ -143,12 +126,10 @@
             gap: 12px;
             min-height: 80px;
         }
-
         .food-info {
             flex: 1;
             min-width: 0;
         }
-
         .food-name {
             font-size: 1.1em;
             font-weight: 600;
@@ -156,13 +137,11 @@
             margin-bottom: 6px;
             line-height: 1.3;
         }
-
         .food-carbs {
             font-size: 1.3em;
             color: #667eea;
             font-weight: 700;
         }
-
         .add-btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -177,11 +156,9 @@
             transition: all 0.2s ease;
             flex-shrink: 0;
         }
-
         .add-btn:active {
             transform: scale(0.95);
         }
-
         .selected-section {
             background: white;
             margin: 15px;
@@ -190,7 +167,6 @@
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
             display: none;
         }
-
         .selected-section h3 {
             font-size: 1.3em;
             margin-bottom: 15px;
@@ -199,7 +175,6 @@
             align-items: center;
             gap: 8px;
         }
-
         .selected-item {
             background: #f8f9fa;
             border: 2px solid #667eea;
@@ -212,7 +187,6 @@
             gap: 12px;
             animation: slideIn 0.3s ease;
         }
-
         .remove-btn {
             background: #dc3545;
             color: white;
@@ -226,11 +200,9 @@
             transition: all 0.2s ease;
             flex-shrink: 0;
         }
-
         .remove-btn:active {
             transform: scale(0.95);
         }
-
         @keyframes slideIn {
             from {
                 opacity: 0;
@@ -241,18 +213,15 @@
                 transform: translateX(0);
             }
         }
-
         .loading, .empty-state {
             text-align: center;
             padding: 40px 20px;
             color: #999;
         }
-
         .empty-icon {
             font-size: 3em;
             margin-bottom: 15px;
         }
-
         .clear-btn {
             background: #dc3545;
             color: white;
@@ -266,21 +235,25 @@
             margin-top: 15px;
             transition: all 0.2s ease;
         }
-
         .clear-btn:active {
             transform: scale(0.98);
         }
-
         /* Larger touch targets for mobile */
         @media (max-width: 600px) {
             .add-btn, .remove-btn {
                 padding: 16px 26px;
                 font-size: 1.1em;
             }
-            
             .food-item {
                 padding: 18px;
             }
+        }
+        .quantity-input {
+            width: 80px;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            text-align: center;
         }
     </style>
 </head>
@@ -289,105 +262,99 @@
         <h1>🍽️ Calculateur de Glucides</h1>
         <p>Suivez facilement vos glucides quotidiens</p>
     </div>
-
     <div class="container">
         <div class="total-card">
             <h2>Total des Glucides</h2>
             <div class="total-amount" id="totalCarbs">0g</div>
         </div>
-
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="Rechercher un aliment...">
             <span class="search-icon">🔍</span>
         </div>
-
         <div class="categories" id="categories"></div>
-
         <div class="content">
             <div id="foodList">
                 <div class="loading">Chargement...</div>
             </div>
         </div>
-
         <div class="selected-section" id="selectedSection">
             <h3>✅ Sélectionnés</h3>
             <div id="selectedList"></div>
             <button class="clear-btn" onclick="clearAll()">🗑️ Tout effacer</button>
         </div>
     </div>
-
     <script>
         const foodDatabase = {
             "🍞 Féculents": [
-                { name: "Pain blanc", portion: "100g", carbs: 49 },
-                { name: "Pain complet", portion: "100g", carbs: 41 },
-                { name: "Baguette", portion: "100g", carbs: 55 },
-                { name: "Riz blanc cuit", portion: "100g", carbs: 28 },
-                { name: "Riz complet cuit", portion: "100g", carbs: 23 },
-                { name: "Pâtes cuites", portion: "100g", carbs: 25 },
-                { name: "Pâtes complètes", portion: "100g", carbs: 23 },
-                { name: "Pomme de terre", portion: "100g", carbs: 17 },
-                { name: "Patate douce", portion: "100g", carbs: 20 },
-                { name: "Quinoa cuit", portion: "100g", carbs: 21 },
-                { name: "Semoule cuite", portion: "100g", carbs: 23 }
+                { name: "Pain blanc", portion: "100g", carbsPer100g: 49, carbs: 49 },
+                { name: "Pain complet", portion: "100g", carbsPer100g: 41, carbs: 41 },
+                { name: "Baguette", portion: "100g", carbsPer100g: 55, carbs: 55 },
+                { name: "Riz blanc cuit", portion: "100g", carbsPer100g: 28, carbs: 28 },
+                { name: "Riz complet cuit", portion: "100g", carbsPer100g: 23, carbs: 23 },
+                { name: "Pâtes cuites", portion: "100g", carbsPer100g: 25, carbs: 25 },
+                { name: "Pâtes complètes", portion: "100g", carbsPer100g: 23, carbs: 23 },
+                { name: "Pomme de terre", portion: "100g", carbsPer100g: 17, carbs: 17 },
+                { name: "Patate douce", portion: "100g", carbsPer100g: 20, carbs: 20 },
+                { name: "Quinoa cuit", portion: "100g", carbsPer100g: 21, carbs: 21 },
+                { name: "Semoule cuite", portion: "100g", carbsPer100g: 23, carbs: 23 }
             ],
             "🍎 Fruits": [
-                { name: "Banane", portion: "1 moyenne", carbs: 27 },
-                { name: "Pomme", portion: "1 moyenne", carbs: 25 },
-                { name: "Orange", portion: "1 moyenne", carbs: 15 },
-                { name: "Poire", portion: "1 moyenne", carbs: 26 },
-                { name: "Raisins", portion: "100g", carbs: 18 },
-                { name: "Fraises", portion: "100g", carbs: 8 },
-                { name: "Mangue", portion: "100g", carbs: 15 },
-                { name: "Ananas", portion: "100g", carbs: 13 },
-                { name: "Kiwi", portion: "1 pièce", carbs: 11 },
-                { name: "Melon", portion: "100g", carbs: 8 }
+                { name: "Banane", portion: "1 moyenne (120g)", carbsPerUnit: 27, carbs: 27 },
+                { name: "Pomme", portion: "1 moyenne (150g)", carbsPerUnit: 25, carbs: 25 },
+                { name: "Orange", portion: "1 moyenne", carbsPerUnit: 15, carbs: 15 },
+                { name: "Poire", portion: "1 moyenne", carbsPerUnit: 26, carbs: 26 },
+                { name: "Raisins", portion: "100g", carbsPer100g: 18, carbs: 18 },
+                { name: "Fraises", portion: "100g", carbsPer100g: 8, carbs: 8 },
+                { name: "Mangue", portion: "100g", carbsPer100g: 15, carbs: 15 },
+                { name: "Ananas", portion: "100g", carbsPer100g: 13, carbs: 13 },
+                { name: "Kiwi", portion: "1 pièce", carbsPerUnit: 11, carbs: 11 },
+                { name: "Melon", portion: "100g", carbsPer100g: 8, carbs: 8 }
             ],
             "🥛 Laitages": [
-                { name: "Lait", portion: "250ml", carbs: 12 },
-                { name: "Yaourt nature", portion: "125g", carbs: 6 },
-                { name: "Yaourt aux fruits", portion: "125g", carbs: 18 },
-                { name: "Fromage blanc", portion: "100g", carbs: 4 },
-                { name: "Crème dessert", portion: "125g", carbs: 20 }
+                { name: "Lait", portion: "250ml", carbsPer100ml: 4.8, carbs: 12 },
+                { name: "Yaourt nature", portion: "125g", carbsPer100g: 4.8, carbs: 6 },
+                { name: "Yaourt aux fruits", portion: "125g", carbsPer100g: 14.4, carbs: 18 },
+                { name: "Fromage blanc", portion: "100g", carbsPer100g: 4, carbs: 4 },
+                { name: "Crème dessert", portion: "125g", carbsPer100g: 16, carbs: 20 }
             ],
             "🍪 Sucreries": [
-                { name: "Chocolat noir", portion: "30g", carbs: 15 },
-                { name: "Chocolat au lait", portion: "30g", carbs: 17 },
-                { name: "Biscuits", portion: "3 pièces", carbs: 20 },
-                { name: "Gâteau", portion: "1 part", carbs: 35 },
-                { name: "Croissant", portion: "1 pièce", carbs: 26 },
-                { name: "Pain au chocolat", portion: "1 pièce", carbs: 30 },
-                { name: "Miel", portion: "1 c. à soupe", carbs: 17 },
-                { name: "Confiture", portion: "1 c. à soupe", carbs: 13 }
+                { name: "Chocolat noir", portion: "30g", carbsPer100g: 50, carbs: 15 },
+                { name: "Chocolat au lait", portion: "30g", carbsPer100g: 56.7, carbs: 17 },
+                { name: "Biscuits", portion: "3 pièces", carbsPerUnit: 6.7, carbs: 20 },
+                { name: "Gâteau", portion: "1 part", carbsPerUnit: 35, carbs: 35 },
+                { name: "Croissant", portion: "1 pièce", carbsPerUnit: 26, carbs: 26 },
+                { name: "Pain au chocolat", portion: "1 pièce", carbsPerUnit: 30, carbs: 30 },
+                { name: "Miel", portion: "1 c. à soupe", carbsPerUnit: 17, carbs: 17 },
+                { name: "Confiture", portion: "1 c. à soupe", carbsPerUnit: 13, carbs: 13 }
             ],
             "🥤 Boissons": [
-                { name: "Jus d'orange", portion: "200ml", carbs: 20 },
-                { name: "Jus de pomme", portion: "200ml", carbs: 24 },
-                { name: "Coca-Cola", portion: "330ml", carbs: 35 },
-                { name: "Limonade", portion: "330ml", carbs: 28 },
-                { name: "Thé sucré", portion: "250ml", carbs: 20 }
+                { name: "Jus d'orange", portion: "200ml", carbsPer100ml: 10, carbs: 20 },
+                { name: "Jus de pomme", portion: "200ml", carbsPer100ml: 12, carbs: 24 },
+                { name: "Coca-Cola", portion: "330ml", carbsPer100ml: 10.6, carbs: 35 },
+                { name: "Limonade", portion: "330ml", carbsPer100ml: 8.5, carbs: 28 },
+                { name: "Thé sucré", portion: "250ml", carbsPer100ml: 8, carbs: 20 }
             ],
             "🥗 Légumes": [
-                { name: "Carottes cuites", portion: "100g", carbs: 8 },
-                { name: "Petits pois", portion: "100g", carbs: 14 },
-                { name: "Maïs", portion: "100g", carbs: 19 },
-                { name: "Betterave", portion: "100g", carbs: 10 },
-                { name: "Tomate", portion: "100g", carbs: 4 },
-                { name: "Concombre", portion: "100g", carbs: 3 }
+                { name: "Carottes cuites", portion: "100g", carbsPer100g: 8, carbs: 8 },
+                { name: "Petits pois", portion: "100g", carbsPer100g: 14, carbs: 14 },
+                { name: "Maïs", portion: "100g", carbsPer100g: 19, carbs: 19 },
+                { name: "Betterave", portion: "100g", carbsPer100g: 10, carbs: 10 },
+                { name: "Tomate", portion: "100g", carbsPer100g: 4, carbs: 4 },
+                { name: "Concombre", portion: "100g", carbsPer100g: 3, carbs: 3 }
             ],
             "🍕 Plats": [
-                { name: "Pizza", portion: "1 part", carbs: 33 },
-                { name: "Burger", portion: "1 pièce", carbs: 40 },
-                { name: "Frites", portion: "100g", carbs: 41 },
-                { name: "Sandwich", portion: "1 pièce", carbs: 45 },
-                { name: "Quiche", portion: "1 part", carbs: 22 }
+                { name: "Pizza", portion: "1 part", carbsPerUnit: 33, carbs: 33 },
+                { name: "Burger", portion: "1 pièce", carbsPerUnit: 40, carbs: 40 },
+                { name: "Frites", portion: "100g", carbsPer100g: 41, carbs: 41 },
+                { name: "Sandwich", portion: "1 pièce", carbsPerUnit: 45, carbs: 45 },
+                { name: "Quiche", portion: "1 part", carbsPerUnit: 22, carbs: 22 }
             ],
             "🥣 Petit-déj": [
-                { name: "Céréales", portion: "30g", carbs: 24 },
-                { name: "Muesli", portion: "30g", carbs: 20 },
-                { name: "Corn flakes", portion: "30g", carbs: 26 },
-                { name: "Flocons d'avoine", portion: "30g", carbs: 18 },
-                { name: "Pain de mie", portion: "2 tranches", carbs: 28 }
+                { name: "Céréales", portion: "30g", carbsPer100g: 80, carbs: 24 },
+                { name: "Muesli", portion: "30g", carbsPer100g: 66.7, carbs: 20 },
+                { name: "Corn flakes", portion: "30g", carbsPer100g: 86.7, carbs: 26 },
+                { name: "Flocons d'avoine", portion: "30g", carbsPer100g: 60, carbs: 18 },
+                { name: "Pain de mie", portion: "2 tranches", carbsPerUnit: 14, carbs: 28 }
             ]
         };
 
@@ -406,8 +373,8 @@
         function displayCategories() {
             const categories = ["Tout", ...Object.keys(foodDatabase)];
             const categoryContainer = document.getElementById('categories');
-            categoryContainer.innerHTML = categories.map(cat => 
-                `<button class="category-btn ${cat === currentCategory ? 'active' : ''}" 
+            categoryContainer.innerHTML = categories.map(cat =>
+                `<button class="category-btn ${cat === currentCategory ? 'active' : ''}"
                          onclick="selectCategory('${cat}')">${cat}</button>`
             ).join('');
         }
@@ -420,16 +387,10 @@
 
         function displayFoods(searchTerm = '') {
             const foodList = document.getElementById('foodList');
-            
-            let foods = currentCategory === "Tout" ? allFoods : 
-                        allFoods.filter(f => f.category === currentCategory);
-            
+            let foods = currentCategory === "Tout" ? allFoods : allFoods.filter(f => f.category === currentCategory);
             if (searchTerm) {
-                foods = foods.filter(food => 
-                    food.name.toLowerCase().includes(searchTerm.toLowerCase())
-                );
+                foods = foods.filter(food => food.name.toLowerCase().includes(searchTerm.toLowerCase()));
             }
-
             if (foods.length === 0) {
                 foodList.innerHTML = `
                     <div class="empty-state">
@@ -439,7 +400,6 @@
                 `;
                 return;
             }
-
             foodList.innerHTML = foods.map((food, index) => `
                 <div class="food-item">
                     <div class="food-info">
@@ -447,24 +407,36 @@
                         <div style="color: #999; font-size: 0.9em; margin-bottom: 4px;">${food.portion}</div>
                         <div class="food-carbs">${food.carbs}g</div>
                     </div>
-                    <button class="add-btn" onclick="addFood(${index}, '${currentCategory}', '${searchTerm}')">+ Ajouter</button>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <input type="number" id="quantity-${index}" placeholder="Quantité" min="1" value="${food.portion.includes('g') ? '100' : '1'}" class="quantity-input">
+                        <button class="add-btn" onclick="addFood(${index}, '${currentCategory}', '${searchTerm}')">+ Ajouter</button>
+                    </div>
                 </div>
             `).join('');
         }
 
         function addFood(index, category, searchTerm) {
-            let foods = currentCategory === "Tout" ? allFoods : 
-                        allFoods.filter(f => f.category === currentCategory);
-            
+            let foods = currentCategory === "Tout" ? allFoods : allFoods.filter(f => f.category === currentCategory);
             if (searchTerm) {
-                foods = foods.filter(food => 
-                    food.name.toLowerCase().includes(searchTerm.toLowerCase())
-                );
+                foods = foods.filter(food => food.name.toLowerCase().includes(searchTerm.toLowerCase()));
             }
-
             const food = foods[index];
-            selectedFoods.push(food);
-            totalCarbs += food.carbs;
+            const quantityInput = document.getElementById(`quantity-${index}`);
+            let quantity = parseFloat(quantityInput.value) || (food.portion.includes('g') ? 100 : 1);
+            let carbs;
+            if (food.carbsPer100g !== undefined) {
+                carbs = (food.carbsPer100g * quantity) / 100;
+            } else if (food.carbsPerUnit !== undefined) {
+                carbs = food.carbsPerUnit * quantity;
+            } else {
+                carbs = food.carbs;
+            }
+            selectedFoods.push({
+                ...food,
+                quantity: quantity,
+                carbs: Math.round(carbs * 10) / 10
+            });
+            totalCarbs += carbs;
             updateDisplay();
         }
 
@@ -483,18 +455,16 @@
         }
 
         function updateDisplay() {
-            document.getElementById('totalCarbs').textContent = totalCarbs + 'g';
-            
+            document.getElementById('totalCarbs').textContent = totalCarbs.toFixed(1) + 'g';
             const selectedSection = document.getElementById('selectedSection');
             const selectedList = document.getElementById('selectedList');
-
             if (selectedFoods.length > 0) {
                 selectedSection.style.display = 'block';
                 selectedList.innerHTML = selectedFoods.map((food, index) => `
                     <div class="selected-item">
                         <div class="food-info">
                             <div class="food-name">${food.name}</div>
-                            <div style="color: #999; font-size: 0.85em;">${food.portion}</div>
+                            <div style="color: #999; font-size: 0.85em;">${food.quantity}${food.portion.includes('g') ? 'g' : ' unité(s)'}</div>
                             <div class="food-carbs">${food.carbs}g</div>
                         </div>
                         <button class="remove-btn" onclick="removeFood(${index})">Retirer</button>
@@ -505,12 +475,10 @@
             }
         }
 
-        // Search functionality
         document.getElementById('searchInput').addEventListener('input', (e) => {
             displayFoods(e.target.value);
         });
 
-        // Initialize
         setTimeout(() => {
             displayCategories();
             displayFoods();
