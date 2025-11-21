@@ -1,149 +1,520 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Carbohydrate Calculator</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font:14px Arial,sans-serif;background:#f5f5f5;padding:10px}
-.container{max-width:800px;margin:0 auto;background:#fff;padding:15px;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,.1)}
-h1{color:#2c3e50;margin-bottom:15px;font-size:24px}
-.loading{text-align:center;padding:20px;color:#7f8c8d}
-.filters{display:flex;gap:10px;margin-bottom:15px}
-.search-box,.category-select{flex:1;padding:10px;border:2px solid #3498db;border-radius:5px;font-size:14px}
-.category-select{flex:0.6}
-.food-list{max-height:300px;overflow-y:auto;border:1px solid #ddd;border-radius:5px;margin-bottom:15px}
-.food-item{padding:8px 10px;border-bottom:1px solid #eee;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
-.food-item:hover{background:#e8f4f8}
-.food-name{flex:1}
-.food-category{font-size:11px;color:#95a5a6;margin-left:10px}
-.carbs-value{color:#e74c3c;font-weight:bold}
-.add-btn{background:#27ae60;color:#fff;border:none;padding:5px 10px;border-radius:3px;cursor:pointer;font-size:12px}
-.add-btn:hover{background:#229954}
-.meal{background:#ecf0f1;padding:15px;border-radius:5px;margin-top:15px}
-.meal h2{font-size:18px;margin-bottom:10px;color:#2c3e50}
-.meal-item{background:#fff;padding:8px;margin:5px 0;border-radius:3px;display:flex;justify-content:space-between;align-items:center}
-.qty-input{width:60px;padding:3px;border:1px solid #bdc3c7;border-radius:3px;text-align:center}
-.remove-btn{background:#e74c3c;color:#fff;border:none;padding:3px 8px;border-radius:3px;cursor:pointer;font-size:11px}
-.remove-btn:hover{background:#c0392b}
-.total{background:#3498db;color:#fff;padding:15px;border-radius:5px;margin-top:15px;text-align:center}
-.total h3{font-size:20px}
-.unit{font-size:12px;color:#7f8c8d}
-.info{font-size:12px;color:#fff;margin-top:5px;opacity:.9}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍽️ Calculateur de Glucides</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding-bottom: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .header h1 {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        .total-card {
+            background: white;
+            margin: 15px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .total-card h2 {
+            font-size: 1em;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .total-amount {
+            font-size: 3em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .search-box {
+            margin: 15px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 16px 50px 16px 20px;
+            font-size: 1em;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.3em;
+        }
+
+        .categories {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 0 15px 15px 15px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .categories::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-btn {
+            background: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .category-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+            transform: scale(1.05);
+        }
+
+        .content {
+            padding: 0 15px;
+        }
+
+        .food-item {
+            background: white;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            gap: 12px;
+            min-height: 80px;
+        }
+
+        .food-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .food-name {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+
+        .food-carbs {
+            font-size: 1.3em;
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .add-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            min-width: 90px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .add-btn:active {
+            transform: scale(0.95);
+        }
+
+        .selected-section {
+            background: white;
+            margin: 15px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .selected-section h3 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .selected-item {
+            background: #f8f9fa;
+            border: 2px solid #667eea;
+            padding: 14px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 12px;
+            animation: slideIn 0.3s ease;
+        }
+
+        .remove-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            min-width: 80px;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .remove-btn:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .loading, .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .empty-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .clear-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 15px;
+            transition: all 0.2s ease;
+        }
+
+        .clear-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Larger touch targets for mobile */
+        @media (max-width: 600px) {
+            .add-btn, .remove-btn {
+                padding: 16px 26px;
+                font-size: 1.1em;
+            }
+            
+            .food-item {
+                padding: 18px;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-<h1>🍽️ Carbohydrate Calculator</h1>
-<div class="loading" id="loading">Loading food database...</div>
-<div id="app" style="display:none">
-<div class="filters">
-<input type="text" class="search-box" id="search" placeholder="Search foods (min 3 letters)...">
-<select class="category-select" id="category">
-<option value="">All Categories</option>
-</select>
-</div>
-<div class="food-list" id="foodList"></div>
-<div class="meal">
-<h2>My Meal</h2>
-<div id="mealItems"></div>
-</div>
-<div class="total">
-<h3>Total Carbs: <span id="totalCarbs">0</span>g</h3>
-<p class="info"><span id="foodCount">0</span> foods available</p>
-</div>
-</div>
-</div>
-<script>
-let foods=[];
-let meal=[];
-let loadedFiles=0;
-const totalFiles=17;
+    <div class="header">
+        <h1>🍽️ Calculateur de Glucides</h1>
+        <p>Suivez facilement vos glucides quotidiens</p>
+    </div>
 
-for(let i=1;i<=totalFiles;i++){
-const script=document.createElement('script');
-script.src=`data_${i}.js`;
-script.onload=()=>{
-loadedFiles++;
-if(window['foodData'+i]){
-foods=foods.concat(window['foodData'+i]);
-}
-if(loadedFiles===totalFiles){
-foods.sort((a,b)=>a[0].localeCompare(b[0]));
-initApp();
-}
-};
-script.onerror=()=>{
-document.getElementById('loading').innerHTML='<span style="color:#e74c3c">Error loading data. Ensure all data_*.js files are in the same directory.</span>';
-};
-document.head.appendChild(script);
-}
+    <div class="container">
+        <div class="total-card">
+            <h2>Total des Glucides</h2>
+            <div class="total-amount" id="totalCarbs">0g</div>
+        </div>
 
-function initApp(){
-document.getElementById('loading').style.display='none';
-document.getElementById('app').style.display='block';
-document.getElementById('foodCount').textContent=foods.length.toLocaleString();
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Rechercher un aliment...">
+            <span class="search-icon">🔍</span>
+        </div>
 
-// Build category list
-const categories=new Set();
-foods.forEach(f=>categories.add(f[2]));
-const catSelect=document.getElementById('category');
-[...categories].sort().forEach(cat=>{
-const opt=document.createElement('option');
-opt.value=cat;
-opt.textContent=cat;
-catSelect.appendChild(opt);
-});
+        <div class="categories" id="categories"></div>
 
-document.getElementById('search').addEventListener('input',render);
-document.getElementById('category').addEventListener('change',render);
-render();
-}
+        <div class="content">
+            <div id="foodList">
+                <div class="loading">Chargement...</div>
+            </div>
+        </div>
 
-function render(){
-const searchTerm=document.getElementById('search').value.toLowerCase();
-const selectedCat=document.getElementById('category').value;
+        <div class="selected-section" id="selectedSection">
+            <h3>✅ Sélectionnés</h3>
+            <div id="selectedList"></div>
+            <button class="clear-btn" onclick="clearAll()">🗑️ Tout effacer</button>
+        </div>
+    </div>
 
-let filtered=foods;
+    <script>
+        const foodDatabase = {
+            "🍞 Féculents": [
+                { name: "Pain blanc", portion: "100g", carbs: 49 },
+                { name: "Pain complet", portion: "100g", carbs: 41 },
+                { name: "Baguette", portion: "100g", carbs: 55 },
+                { name: "Riz blanc cuit", portion: "100g", carbs: 28 },
+                { name: "Riz complet cuit", portion: "100g", carbs: 23 },
+                { name: "Pâtes cuites", portion: "100g", carbs: 25 },
+                { name: "Pâtes complètes", portion: "100g", carbs: 23 },
+                { name: "Pomme de terre", portion: "100g", carbs: 17 },
+                { name: "Patate douce", portion: "100g", carbs: 20 },
+                { name: "Quinoa cuit", portion: "100g", carbs: 21 },
+                { name: "Semoule cuite", portion: "100g", carbs: 23 }
+            ],
+            "🍎 Fruits": [
+                { name: "Banane", portion: "1 moyenne", carbs: 27 },
+                { name: "Pomme", portion: "1 moyenne", carbs: 25 },
+                { name: "Orange", portion: "1 moyenne", carbs: 15 },
+                { name: "Poire", portion: "1 moyenne", carbs: 26 },
+                { name: "Raisins", portion: "100g", carbs: 18 },
+                { name: "Fraises", portion: "100g", carbs: 8 },
+                { name: "Mangue", portion: "100g", carbs: 15 },
+                { name: "Ananas", portion: "100g", carbs: 13 },
+                { name: "Kiwi", portion: "1 pièce", carbs: 11 },
+                { name: "Melon", portion: "100g", carbs: 8 }
+            ],
+            "🥛 Laitages": [
+                { name: "Lait", portion: "250ml", carbs: 12 },
+                { name: "Yaourt nature", portion: "125g", carbs: 6 },
+                { name: "Yaourt aux fruits", portion: "125g", carbs: 18 },
+                { name: "Fromage blanc", portion: "100g", carbs: 4 },
+                { name: "Crème dessert", portion: "125g", carbs: 20 }
+            ],
+            "🍪 Sucreries": [
+                { name: "Chocolat noir", portion: "30g", carbs: 15 },
+                { name: "Chocolat au lait", portion: "30g", carbs: 17 },
+                { name: "Biscuits", portion: "3 pièces", carbs: 20 },
+                { name: "Gâteau", portion: "1 part", carbs: 35 },
+                { name: "Croissant", portion: "1 pièce", carbs: 26 },
+                { name: "Pain au chocolat", portion: "1 pièce", carbs: 30 },
+                { name: "Miel", portion: "1 c. à soupe", carbs: 17 },
+                { name: "Confiture", portion: "1 c. à soupe", carbs: 13 }
+            ],
+            "🥤 Boissons": [
+                { name: "Jus d'orange", portion: "200ml", carbs: 20 },
+                { name: "Jus de pomme", portion: "200ml", carbs: 24 },
+                { name: "Coca-Cola", portion: "330ml", carbs: 35 },
+                { name: "Limonade", portion: "330ml", carbs: 28 },
+                { name: "Thé sucré", portion: "250ml", carbs: 20 }
+            ],
+            "🥗 Légumes": [
+                { name: "Carottes cuites", portion: "100g", carbs: 8 },
+                { name: "Petits pois", portion: "100g", carbs: 14 },
+                { name: "Maïs", portion: "100g", carbs: 19 },
+                { name: "Betterave", portion: "100g", carbs: 10 },
+                { name: "Tomate", portion: "100g", carbs: 4 },
+                { name: "Concombre", portion: "100g", carbs: 3 }
+            ],
+            "🍕 Plats": [
+                { name: "Pizza", portion: "1 part", carbs: 33 },
+                { name: "Burger", portion: "1 pièce", carbs: 40 },
+                { name: "Frites", portion: "100g", carbs: 41 },
+                { name: "Sandwich", portion: "1 pièce", carbs: 45 },
+                { name: "Quiche", portion: "1 part", carbs: 22 }
+            ],
+            "🥣 Petit-déj": [
+                { name: "Céréales", portion: "30g", carbs: 24 },
+                { name: "Muesli", portion: "30g", carbs: 20 },
+                { name: "Corn flakes", portion: "30g", carbs: 26 },
+                { name: "Flocons d'avoine", portion: "30g", carbs: 18 },
+                { name: "Pain de mie", portion: "2 tranches", carbs: 28 }
+            ]
+        };
 
-// Filter by category
-if(selectedCat){
-filtered=filtered.filter(f=>f[2]===selectedCat);
-}
+        let selectedFoods = [];
+        let totalCarbs = 0;
+        let currentCategory = "Tout";
+        let allFoods = [];
 
-// Filter by search (min 3 letters)
-if(searchTerm.length>=3){
-filtered=filtered.filter(f=>f[0].toLowerCase().includes(searchTerm));
-}
+        // Flatten all foods
+        Object.keys(foodDatabase).forEach(category => {
+            foodDatabase[category].forEach(food => {
+                allFoods.push({ ...food, category });
+            });
+        });
 
-// Limit results
-const results=filtered.slice(0,100);
+        function displayCategories() {
+            const categories = ["Tout", ...Object.keys(foodDatabase)];
+            const categoryContainer = document.getElementById('categories');
+            categoryContainer.innerHTML = categories.map(cat => 
+                `<button class="category-btn ${cat === currentCategory ? 'active' : ''}" 
+                         onclick="selectCategory('${cat}')">${cat}</button>`
+            ).join('');
+        }
 
-document.getElementById('foodList').innerHTML=results.length?results.map((f,i)=>`<div class="food-item"><span class="food-name">${f[0]}<span class="food-category">${f[2]}</span></span><span class="carbs-value">${f[1]}g<span class="unit">/100g</span></span><button class="add-btn" onclick="add(${foods.indexOf(f)})">+</button></div>`).join(''):`<p style="padding:10px;color:#95a5a6">${searchTerm.length>0&&searchTerm.length<3?'Type at least 3 letters to search':'No foods found'}</p>`;
-}
+        function selectCategory(category) {
+            currentCategory = category;
+            displayCategories();
+            displayFoods();
+        }
 
-function add(i){
-meal.push({name:foods[i][0],carbs:foods[i][1],qty:100});
-renderMeal();
-}
+        function displayFoods(searchTerm = '') {
+            const foodList = document.getElementById('foodList');
+            
+            let foods = currentCategory === "Tout" ? allFoods : 
+                        allFoods.filter(f => f.category === currentCategory);
+            
+            if (searchTerm) {
+                foods = foods.filter(food => 
+                    food.name.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+            }
 
-function remove(i){
-meal.splice(i,1);
-renderMeal();
-}
+            if (foods.length === 0) {
+                foodList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🔍</div>
+                        <p>Aucun aliment trouvé</p>
+                    </div>
+                `;
+                return;
+            }
 
-function updateQty(i,v){
-meal[i].qty=parseFloat(v)||0;
-renderMeal();
-}
+            foodList.innerHTML = foods.map((food, index) => `
+                <div class="food-item">
+                    <div class="food-info">
+                        <div class="food-name">${food.name}</div>
+                        <div style="color: #999; font-size: 0.9em; margin-bottom: 4px;">${food.portion}</div>
+                        <div class="food-carbs">${food.carbs}g</div>
+                    </div>
+                    <button class="add-btn" onclick="addFood(${index}, '${currentCategory}', '${searchTerm}')">+ Ajouter</button>
+                </div>
+            `).join('');
+        }
 
-function renderMeal(){
-const items=meal.map((m,i)=>`<div class="meal-item"><span>${m.name}</span><input type="number" class="qty-input" value="${m.qty}" onchange="updateQty(${i},this.value)">g<span class="carbs-value">${(m.carbs*m.qty/100).toFixed(1)}g</span><button class="remove-btn" onclick="remove(${i})">×</button></div>`).join('');
-document.getElementById('mealItems').innerHTML=items||'<p style="color:#95a5a6">Add foods to your meal</p>';
-const total=meal.reduce((sum,m)=>sum+(m.carbs*m.qty/100),0);
-document.getElementById('totalCarbs').textContent=total.toFixed(1);
-}
-</script>
+        function addFood(index, category, searchTerm) {
+            let foods = currentCategory === "Tout" ? allFoods : 
+                        allFoods.filter(f => f.category === currentCategory);
+            
+            if (searchTerm) {
+                foods = foods.filter(food => 
+                    food.name.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+            }
+
+            const food = foods[index];
+            selectedFoods.push(food);
+            totalCarbs += food.carbs;
+            updateDisplay();
+        }
+
+        function removeFood(index) {
+            totalCarbs -= selectedFoods[index].carbs;
+            selectedFoods.splice(index, 1);
+            updateDisplay();
+        }
+
+        function clearAll() {
+            if (confirm('Voulez-vous vraiment tout effacer ?')) {
+                selectedFoods = [];
+                totalCarbs = 0;
+                updateDisplay();
+            }
+        }
+
+        function updateDisplay() {
+            document.getElementById('totalCarbs').textContent = totalCarbs + 'g';
+            
+            const selectedSection = document.getElementById('selectedSection');
+            const selectedList = document.getElementById('selectedList');
+
+            if (selectedFoods.length > 0) {
+                selectedSection.style.display = 'block';
+                selectedList.innerHTML = selectedFoods.map((food, index) => `
+                    <div class="selected-item">
+                        <div class="food-info">
+                            <div class="food-name">${food.name}</div>
+                            <div style="color: #999; font-size: 0.85em;">${food.portion}</div>
+                            <div class="food-carbs">${food.carbs}g</div>
+                        </div>
+                        <button class="remove-btn" onclick="removeFood(${index})">Retirer</button>
+                    </div>
+                `).join('');
+            } else {
+                selectedSection.style.display = 'none';
+            }
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            displayFoods(e.target.value);
+        });
+
+        // Initialize
+        setTimeout(() => {
+            displayCategories();
+            displayFoods();
+        }, 300);
+    </script>
 </body>
 </html>
